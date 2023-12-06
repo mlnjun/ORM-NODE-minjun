@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>로그인 웹페이지</title>
+</head>
+
+<body>
+  <h1>로그인</h1>
+
+  <!-- form태그의 목적은 사용자로부터 데이터를 입력받아 서버로 전송해주는 역할 제공
+  form태그의 주요 속성으로는 action, method가 있다.
+  action 속성 폼태그내 사용자가 입력한 데이터를 어디로 보낼지 주소
+  method 웹 브라우저/클라이언트에서 서버로 요청하는 방식(get/post/delete...patch)가 있다.
+  post 는 body로 get은 header로 -->
+  <form action="/auth/login" method="post" onsubmit="return fnFormCheck()">
+    메일 주소 : <input type="email" name="email" id="email"/> <br/>
+    암호 : <input type="password" name="password" id="password"/><br/>
+    <input type="submit" value="로그인"/>
+  </form>
+
+
+  <script>
+
+    // 폼사용자 입력값 유효성 겁사 체크함수
+    function fnFormCheck(){
+
+      if(document.getElementById("email").value == ""){  // id가 email인 태그의 value를 가져온다
+        alert("메일주소를 입력해주세요.");
+        document.getElementById("email").focus();
+        return false;
+      }  
+      
+      
+      if(document.getElementById("password").value == ""){
+        alert("메일주소를 입력해주세요.");
+        document.getElementById("password").focus();
+        return false;
+      }  
+      
+      return true;
+    }
+    
+  </script>
+</body>
+</html>
