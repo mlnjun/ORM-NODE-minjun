@@ -14,15 +14,20 @@
 
     <tbody>
       <tr>
-        <th>1</th>
+        <!-- 파라미터 방식으로 URL내에 데이터를 넣어 값을 URL 전달하는 방식 -->
+        <th><a href="/product/detail/1">1</a></th>
+
+
+        <!-- 쿼리스트링 방식으로 데이터를 URL을 통해 전달하는 방식 -->
         <th><a href="/product/detail?pid=1&pname=LG노트북">LG노트북</a></th>
-        <th>6000</th>
+
+        <th><a href="/product/detail/1/LG노트북/6000">6000</a></th>
         <th>5</th>
       </tr>
 
       <tr>
-        <th>2</th>
-        <th>삼성노트북</th>
+        <th><a href="/product/detail/2">2</a></th>
+        <th><a href="/product/detail?pid=2&pname=삼성노트북">삼성노트북</a></th>
         <th>5000</th>
         <th>3</th>
       </tr>
