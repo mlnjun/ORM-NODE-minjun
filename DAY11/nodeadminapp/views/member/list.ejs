@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>user 계정 생성</title>
+  </head>
+
+
+  <body>
+    <h1>user 계정 생성</h1>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>PW</th>
+          <th>이름</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%for (var i=0; i<userMembers.length; i++) { %>
+        <tr>
+          <td><%=userMembers[i].id%></td>
+          <td><%=userMembers[i].password%></td>
+          <td><%=userMembers[i].userName%></td>
+          <th><a href="/member/modify/<%=userMembers[i].userName%>">수정</a></th>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <br/>
+
+    <a href="/member/create">새user 계정 생성</a>
+    
+    <br/>
+    <a href="/">관리자 메인 페이지</a>
+  </body>
+</html>

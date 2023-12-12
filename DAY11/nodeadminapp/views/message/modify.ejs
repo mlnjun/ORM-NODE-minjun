@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>메시지 수정</title>
+  </head>
+
+
+  <body>
+    <h1>메시지 수정</h1>
+    <form action="/message/modify/<%=message.msgId%>" method="post"><br/>
+      메시지 유저 : <input type="text" name="msgUser" value="<%=message.msgUser%>"><br/>
+      메시지 내용 : <textarea name="msgContents" rows="20" cols="10"><%=message.msgContent%>
+      </textarea><br/>
+      <input type="submit" value="수정">
+      <a href="/message/delete">삭제</a>
+    </form>
+  </body>
+</html>

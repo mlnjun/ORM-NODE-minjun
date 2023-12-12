@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>메시지 관리</title>
+  </head>
+
+
+  <body>
+    <h1>메시지 관리</h1>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>메시지 유저</th>
+          <th>메시지 내용</th>
+          <th>메시지 시간</th>
+          <th>고유 ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%for (var i=0; i<message.length; i++) { %>
+        <tr>
+          <td><%=message[i].msgUser%></td>
+          <td><%=message[i].msgContent%></td>
+          <td><%=message[i].msgDate%></td>
+          <td><%=message[i].msgId%></td>
+          <th><a href="/message/modify/<%=message[i].msgId%>">수정</a></th>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <br/>
+
+    <a href="/message/create">message 생성</a>
+    
+    <br/>
+    <a href="/">관리자 메인 페이지</a>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>채팅방 수정</title>
+  </head>
+
+
+  <body>
+    <h1>채팅방 수정</h1>
+    <form action="/channel/modify/<%=channel.id%>" method="post"><br/>
+      제목 : <input type="text" name="chTitle" value="<%=channel.title%>"><br/>
+      <% for (let i=0; i<channel.members.length; i++) { %>
+      인원 : <input type="text" name="chMembers" value="<%=channel.members[i]%>">
+      <% } %>
+      <input type="submit" value="수정">
+      <a href="/channel/delete">삭제</a>
+    </form>
+  </body>
+</html>

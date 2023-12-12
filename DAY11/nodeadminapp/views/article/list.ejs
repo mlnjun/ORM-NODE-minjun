@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>게시글 관리</title>
+  </head>
+
+
+  <body>
+    <h1>게시글 목록</h1>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>제목</th>
+          <th>내용</th>
+          <th>고유ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%for (var i=0; i<articles.length; i++) { %>
+        <tr>
+          <td><%=articles[i].title%></td>
+          <td><%=articles[i].contents%></td>
+          <td><%=articles[i].articleId%></td>
+          <th><a href="/article/modify/<%=articles[i].articleId%>">수정</a></th>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <br/>
+
+    <a href="/article/create">새admin 생성</a>
+
+    <br/>
+    <a href="/">관리자 메인 페이지</a>
+  </body>
+</html>

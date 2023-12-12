@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>관리자 계정 정보</title>
+  </head>
+
+
+  <body>
+    <h1>관리자 계정</h1>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>방 이름</th>
+          <th>인원</th>
+          <th>고유ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%for (let i=0; i<channel.length; i++) { %>
+        <tr>
+          <td><%=channel[i].title%> </td>
+          <td>
+            <%for (let j=0; j<channel[i].members.length; j++) { %>
+              <%=channel[i].members[j]%>, 
+            <% } %>
+            </td>
+          <td><%=channel[i].id%></td>
+          <th><a href="/channel/modify/<%=channel[i].id%>">수정</a></th>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <br/>
+
+    <a href="/channel/create">새 채팅방 생성</a>
+    
+    <br/>
+    <a href="/">관리자 메인 페이지</a>
+  </body>
+</html>
