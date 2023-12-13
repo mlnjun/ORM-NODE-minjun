@@ -9,14 +9,9 @@ var router = express.Router();
 호출 주소 : http://localhost:3000/chat
 GET
 */
-router.get('',async(req, res)=>{
+router.get('/',async(req, res)=>{
   res.render('chat/index');
 });
-
-
-
-
-
 
 
 module.exports = router;

@@ -103,20 +103,17 @@ router.post('/delete',async(req,res)=>{
 
   // 단일 회원정보 데이터 조회 
 // http://localhost:3000/api/member/cid
-router.get('/mid',async(req,res)=>{
-  let userid = req.body.userid;
+router.get('/mid/:userid',async(req,res)=>{
+  let userid = req.params.userid;
 
 
   for(let i = 0; i<userMember.length; i++){
     if(userMember[i].userid == userid){
-      // console.log(channelData[i]);j
-      res.json(userMember);
-      break;
-    }else{
-      res.send("해당 계정은 존재하지 않습니다.");
+      res.json(userMember[i]);
       break;
     }
   }
+  
 })
 
 
