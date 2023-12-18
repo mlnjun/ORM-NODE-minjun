@@ -35,7 +35,8 @@ router.get('/all',async(req, res)=>{
         ip_address:"111.111.124.44",
         is_display_code:1,
         reg_date:"2023-12-14",
-        reg_member_id:"kmj"
+        reg_member_id:"kmj",
+        article_type_code:1
       },
       {
         article_id:2,
@@ -46,7 +47,8 @@ router.get('/all',async(req, res)=>{
         ip_address:"222.111.124.44",
         is_display_code:0,
         reg_date:"2023-12-13",
-        reg_member_id:"kmj"
+        reg_member_id:"kmj",
+        article_type_code:1
       },
       {
         article_id:3,
@@ -57,7 +59,8 @@ router.get('/all',async(req, res)=>{
         ip_address:"123.111.124.44",
         is_display_code:1,
         reg_date:"2023-12-14",
-        reg_member_id:"kmj"
+        reg_member_id:"kmj",
+        article_type_code:1
       }
     ];
 
@@ -132,7 +135,8 @@ router.post('/create',async(req, res)=>{
       ip_address:"111.111.124.44",
       is_display_code:1,
       reg_date:"2023-12-14",
-      reg_member_id:"kmj"
+      reg_member_id:"kmj",
+      article_type_code:1
     }
 
 
@@ -247,7 +251,8 @@ router.get('/:aidx',async(req, res)=>{
       ip_address:"111.111.124.44",
       is_display_code:1,
       reg_date:"2023-12-14",
-      reg_member_id:"kmj"
+      reg_member_id:"kmj",
+      article_type_code:1
     }
 
 
