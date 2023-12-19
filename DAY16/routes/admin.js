@@ -13,19 +13,31 @@ router.get('/list',function(req,res){
   // admin 계정 정보 객체 리스트
   var admin_member = [
     {
+      admin_member_id:"1",
       admin_id:"asd123",
       admin_password:"asd123",
-      admin_name:'A'
+      admin_name:'A',
+      email:"asd123@gmail.com",
+      reg_date:Date.now(),
+      company_code:"1"
     },
     {
+      admin_member_id:2,
       admin_id:"qwe456",
       admin_password:"qwe456",
-      admin_name:'B'
+      admin_name:'B',
+      email:"asd123@gmail.com",
+      reg_date:Date.now(),
+      company_code:"2"
     },
     {
+      admin_member_id:3,
       admin_id:"zxc123",
       admin_password:"zxc123",
-      admin_name:'C'
+      admin_name:'C',
+      email:"asd123@gmail.com",
+      reg_date:Date.now(),
+      company_code:"1"
     }
   ]
 
@@ -52,12 +64,16 @@ router.post('/create', function(req,res){
   var admin_id = req.body.aid;
   var admin_password = req.body.apassword;
   var admin_name = req.body.aname;
+  var email = req.body.aemail;
+  var company_code = req.body.company;
 
   var admin_member = [
     {
       admin_id,
       admin_password,
-      admin_name
+      admin_name,
+      email,
+      company_code
     }
   ]
 
@@ -79,10 +95,14 @@ router.get('/modify/:aid', function(req,res){
 
   // 임시 데이터
   var admin_member = {
+    admin_member_id:"1",
     admin_id:"asd123",
     admin_password:"asd123",
-    admin_name:'A'
-  };
+    admin_name:'A',
+    email:"asd123@gmail.com",
+    reg_date:Date.now(),
+    company_code:1
+  }
 
   res.render('admin/modify', {admin_member});
 });
@@ -97,12 +117,16 @@ router.post('/modify/:aid', function(req,res){
   var admin_id = req.body.aid;
   var admin_password = req.body.apassword;
   var admin_name = req.body.aname;
+  var email = req.body.aemail;
+  var company_code = req.body.company
 
   var admin_member = [
     {
       admin_id,
       admin_password,
-      admin_name
+      admin_name,
+      email,
+      company_code
     }
   ]
 
