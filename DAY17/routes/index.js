@@ -76,11 +76,11 @@ router.post('/login',async(req,res)=>{
   });
 
 
-  if(foundEmail === undefined &&  foundPassword === undefined){
-    res.redirect('/login')
-  }else{
+  if(foundEmail !== undefined &&  foundPassword !== undefined){
     // 로그인 일치하는 ID,PW 있을시 채팅 페이지 이동처리
     res.redirect('/chat');
+  }else{
+    res.redirect('/login')
   }
 
 
