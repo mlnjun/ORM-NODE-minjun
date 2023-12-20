@@ -86,6 +86,7 @@ router.get('/all',async(req, res)=>{
   res.json(apiResult);
 });
 
+
 // 신규게시글 등록처리 API 라우팅 메소드
 // http://localhost:3000/api/article/create
 router.post('/create',async(req, res)=>{
