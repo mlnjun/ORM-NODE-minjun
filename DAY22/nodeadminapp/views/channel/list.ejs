@@ -1,0 +1,123 @@
+
+
+            <!--우측 상단 헤더 영역 -->
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>채팅 채널 관리</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Home > </a>
+                        </li>
+                        <li>
+                            <a>채팅 채널 관리 > </a>
+                        </li>
+                        <li class="active">
+                            <strong>조회</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+
+            <!--우측 콘텐츠 영역 -->
+            <div class="wrapper wrapper-content">
+
+
+                <!-- 조회 옵션 -->
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="OrderNo">카테고리</label>
+                                <select class="form-control">
+                                  <!-- board_type_code -->
+                                  <option value="0">선택</option>
+                                  <option value="1">백엔드 채팅방</option>
+                                  <option value="2">프론트엔드 채팅방</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="OrderName">채팅방 이름</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="OrderName">채팅방 상태</label>
+                                <select class="form-control">
+                                  <!-- article_type_code -->
+                                    <option value="0">선택</option>
+                                    <option value="1">공개</option>
+                                    <option value="2">비공개</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary">조회</button>
+                        <a href="/channel/create" class="btn btn-info">신규</a>
+                    </div>
+                </div>
+
+                <!-- 리스트 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">방이름</th>
+                                                <th width="10%">개설자</th>
+                                                <th width="20%">소개</th>
+                                                <th width="10%">방 크기</th>
+                                                <th width="10%">카테고리</th>
+                                                <th width="10%">공개/비공개</th>
+                                                <th width="10%">등록일</th>
+                                            </tr>
+                                        </thead>
+
+                                    
+                                        <tbody class="hoverTblBody">
+                                            <% for(let i=0; i<channel.length; i++) { %>
+                                            <tr>
+                                                <td><a href="/channel/modify/<%=channel[i].community_id%>"><%=channel[i].channel_name%></a></td>
+                                                <td><%=channel[i].reg_member_id%></td>
+                                                <td><%=channel[i].channel_desc%></td>
+                                                <td><%=channel[i].user_limit%></td>
+                                                <td>
+                                                  <% if (channel[i].category_code === 1) {%>
+                                                    백엔드 채팅방
+                                                  <%}%>
+                                                  <% if (channel[i].category_code === 2) {%>
+                                                    프론트엔드 채팅방
+                                                  <%}%>
+                                                </td>
+                                                <td>
+                                                  <% if (channel[i].channel_state_code === 1) {%>
+                                                    공개
+                                                  <%}%>
+                                                  <% if (channel[i].channel_state_code === 2) {%>
+                                                    비공개
+                                                  <%}%></td>
+                                                <td><%=channel[i].reg_date%></td>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
