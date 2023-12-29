@@ -1,0 +1,55 @@
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>로그인</title>
+  </head>
+
+  <body>
+    <h1>로그인</h1>
+
+    <form action="/login" method="post">
+      ID : <input type="text" name="uid"><br/>
+      PW : <input type="password" name="upassword"><br/>
+      <input type="submit"  value="로그인">
+    </form>
+    <a href="/entry"><button>회원가입</button></a>
+    <a href="/find"><button>비밀번호 찾기</button></a>
+  </body>
+</html> -->
+
+        <!-- 오른쪽 콘텐츠 구간 -->
+				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+					<div class="login-wrapper">
+						<form action="/login" method="post">
+							<div class="login-screen">
+								<div class="login-body">
+									<a href="index.html" class="login-logo">
+										<img src="img/logo.svg" alt="Quick Chat">
+									</a>
+									<h6>로그인<br></h6>
+
+                    <div class="field-wrapper">
+                      <input type="email" name="uid" autofocus>
+                      <div class="field-placeholder">Email / ID</div>
+                    </div>
+                    <div class="field-wrapper mb-3">
+                      <input type="password" name="upassword" value="<%=upassword%>">
+                      <div class="field-placeholder">Password</div>
+                    </div>
+                    <div class="actions">
+                      <a href="/find">Forgot password?</a>
+                      <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                  </div>
+
+								<div class="login-footer">
+									<span class="additional-link">계정이 없으신가요? <a href="/entry" class="btn btn-secondary">회원 가입</a></span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Row end -->
+
