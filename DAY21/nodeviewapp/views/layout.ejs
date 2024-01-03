@@ -15,6 +15,10 @@
     <link href="/css/animate.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
+    <!-- Switchery -->
+    <link href="/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="/css/plugins/switchery/switchery.css" rel="stylesheet">
+
     <!--추가 스타일-->
     <!--
     컨텐츠 뷰파일내 존재하는 스타일 태그가 존재하면 여기 지점에 삽입되어 하나의 페이지로 통합된다.
@@ -90,35 +94,41 @@
 
             <!--우측 하단 풋터 영역-->
             <div class="footer">
-              <div class="pull-right">
-                  10GB of <strong>250GB</strong> Free.
-              </div>
-              <div>
-                  <strong>Copyright</strong> Naver Company &copy; 2014-2018
-              </div>
-          </div>
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Naver Company &copy; 2014-2018
+                </div>
+            </div>
 
-      </div>
-  </div>
+        </div>
+    </div>
 
-  <!-- Mainly scripts -->
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-  <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Mainly scripts -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-  <!-- Custom and plugin javascript -->
-  <script src="/js/inspinia.js"></script>
-  <script src="/js/plugins/pace/pace.min.js"></script>
-
-
-  <!--추가 스크립트-->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/js/inspinia.js"></script>
+    <script src="/js/plugins/pace/pace.min.js"></script>
 
 
-  <script>
+    <!--추가 스크립트-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Switchery (스위치 플러그인) -->
+    <script src="/js/plugins/switchery/switchery.js"></script>
+
+    <!-- fooerble(클라이언트 웹페이징 플러그인) -->
+    <script src="/js/plugins/footable/footable.all.min.js"></script>
+
+
+    <script>
       // 조회폼 입력 유효성 검사
       // = document.getElementById("searchForm")  자바스크립트 코드
       $("#searchForm").submit(function(){  // $ = Jquery사용하겠다는 의미
@@ -127,12 +137,12 @@
           //     $("#boardTypeCode").focus();
           //     return false;
           // }
-      });
+        });
 
-  </script>
+    </script>
 
-  <!-- 개별 콘텐츠 뷰내에 존재하는 스크립트 태그는 하기 부분에 삽입되어 통합된다. -->
-  <%- script %>
+    <!-- 개별 콘텐츠 뷰내에 존재하는 스크립트 태그는 하기 부분에 삽입되어 통합된다. -->
+    <%- script %>
 
 </body>
 

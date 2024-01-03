@@ -4,46 +4,6 @@ var router = express.Router();
 // 공통기능 제공 (로그인, 회원가입, 암호찾기)
 
 
-// 임시 DB
-var member = [
-  {
-    member_id:1,
-    email:"qwe123@gmail.com",
-    member_password:"qwe123",
-    name:"A",
-    telephone:"010-9999-9999",
-    birth_date:"2000-01-01",
-    entry_type_code:1,
-    use_state_code:1,
-    reg_member_id:1,
-    reg_date:Date.now()
-  },
-  {
-    member_id:2,
-    email:"asd123@gmail.com",
-    member_password:"asd123",
-    name:"B",
-    telephone:"010-8888-8888",
-    birth_date:"2000-01-01",
-    entry_type_code:2,
-    use_state_code:2,
-    reg_member_id:2,
-    reg_date:Date.now()
-  },
-  {
-    member_id:3,
-    email:"zxc123@gmail.com",
-    member_password:"zxc123",
-    name:"C",
-    telephone:"010-7777-7777",
-    birth_date:"2000-01-01",
-    entry_type_code:2,
-    use_state_code:1,
-    reg_member_id:3,
-    reg_date:Date.now()
-  },
-]
-
 /*
 -로그인 웹페이지 요청 및 응답
 호출 주소 : http://localhost:3000/login
