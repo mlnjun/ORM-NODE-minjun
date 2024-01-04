@@ -21,6 +21,11 @@ db.Sequelize = Sequelize;
 
 
 db.Admin = require('./admin')(sequelize,Sequelize);
-
+db.Member  = require('./member')(sequelize,Sequelize);
+db.Channel = require('./channel')(sequelize,Sequelize);
+db.ChannelMessage = require('./channelMessage')(sequelize,Sequelize);
+db.ChannelMember = require('./channelMember')(sequelize,Sequelize);
+db.Article = require('./article')(sequelize,Sequelize);
+db.ArticleFile = require('./articleFile')(sequelize,Sequelize);
 
 module.exports = db;

@@ -3,7 +3,10 @@ DAY3/myfirstapp/node_modules
 레이아웃 설정.txt
 sequelize.txt
 MongoDB.txt
+.env
 
 node_modules
 
 config
+
+schemas/index.js
