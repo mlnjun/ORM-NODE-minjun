@@ -7,7 +7,8 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const memberSchema = new Schema({
     email:{
       type:String,
-      required:true
+      required:true,
+      unique:true
     },
     member_password:{
       type:String,
@@ -39,7 +40,8 @@ const memberSchema = new Schema({
     },
     reg_date:{
       type:Date,
-      required:true
+      required:true,
+      default:Date.now
     },
     reg_member_id:{
       type:Number

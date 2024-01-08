@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+
 // 공통기능 제공 (로그인, 회원가입, 암호찾기)
 
 
@@ -144,22 +145,16 @@ router.post('/find',async(req, res)=>{
 
 
   // 받은 email DB에서 유무 체크
-  let foundEmail = member.find(function(e){
-    return e.email === email;
-  })
+  let foundMember = await Member.findOne({ email });
 
-
-  if(foundEmail){
-    for(let i=0; i<member.length; i++){
-      if(member[i].email === foundEmail.email){
-        // 로그인 페이지 이동 처리
-        res.render('login', {upassword:member[i].member_password});
-        return false;
-      }
-    }
+  if(!foundMember){
+    res.redirect('/find');
+  }else{
+    res.render('login', {
+      email:email, upassword:foundMember.member_password, resultMsg:'계정의 암호를 찾았습니다.'
+    });
   }
   
-  res.redirect('/find');
   
 
   // DB에서 해당 email의 계정 PW 데이터 전송
