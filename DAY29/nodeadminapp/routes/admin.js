@@ -127,6 +127,7 @@ router.get('/modify/:aid', async(req, res, next) => {
 */
 router.post('/modify/:aid', async(req, res, next) => {
   let [
+    admin_member_id,
     company_code,
     admin_id,
     admin_password,
@@ -136,6 +137,7 @@ router.post('/modify/:aid', async(req, res, next) => {
     used_yn_code,
     dept_name
   ] = [
+    req.params.aid,
     req.body.companyCode,
     req.body.adminid,
     req.body.admin_password,
@@ -171,7 +173,7 @@ router.post('/modify/:aid', async(req, res, next) => {
     reg_member_id:1
   }
 
-  let createdAdmin = await db.Admin.create(newAdmin)
+  let modifiedAdmin = await db.Admin.update(newAdmin, { where : { admin_member_id } })
 
 
   res.redirect('/admin/list');
