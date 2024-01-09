@@ -7,6 +7,6 @@ MongoDB.txt
 
 node_modules
 
-config
+config.json
 
 schemas/index.js
