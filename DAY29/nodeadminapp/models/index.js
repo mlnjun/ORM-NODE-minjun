@@ -27,9 +27,21 @@ db.sequelize = sequelize; //DB연결정보를 포함한 DB제어 객체속성(CR
 db.Sequelize = Sequelize; //Sequelize팩키지에서 제공하는 각종 데이터 타입 및 관련 객체정보를 제공함
 
 
-//회원모델 모듈파일 참조하고 db속성정의하기
+// 게시글 정보관리 모델
 db.Article = require('./article.js')(sequelize,Sequelize);
+
+//회원모델 모듈파일 참조하고 db속성정의하기
 db.Admin = require('./admin.js')(sequelize,Sequelize);
+
+// 게시글 파일정보관리 모델
+db.ArticleFile = require('./article_file.js')(sequelize,Sequelize);
+
+
+// 테이블간의 ORM기반 관계설정하기 영역 : 1:N 관계를 ORM으로 설정
+// foreignKey FK로 지정할 article_file의 article_id, sourceKey 참조할 article의 article_id
+db.Article.hasMany(db.ArticleFile,{foreignKey: 'article_id', sourceKey:'article_id'});
+// foreignKey 
+db.ArticleFile.belongsTo(db.Article,{foreignKey:'article_id',targetKey:'article_id'});
 
 
 //db객체 외부로 노출하기

@@ -33,6 +33,7 @@ module.exports = function(sequelize,DataTypes){
       contents: {
         type: DataTypes.TEXT,
         allowNull: true,
+        default:"",
         comment: '글내용',
       },
 

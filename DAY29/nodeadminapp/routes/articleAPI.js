@@ -6,6 +6,28 @@
 var express = require('express');
 var router = express.Router();
 
+var moment = require('moment');
+
+// multer멀티 업로드 패키지 참조하기
+var multer = require('multer');
+
+// S3전용 업로드 객체 참조하기
+var {upload} = require('../common/aws_s3');
+
+//파일저장위치 지정
+var storage  = multer.diskStorage({ 
+    destination(req, file, cb) {
+        cb(null, 'public/upload/');   
+    },
+    filename(req, file, cb) {
+        cb(null, `${moment(Date.now()).format('YYYYMMDDHHmmss')}__${file.originalname}`);
+    },
+});
+
+
+//일반 업로드처리 객체 생성
+var simpleUpload = multer({ storage: storage });
+
 
 // 전체 게시글 목록 데이터 조회 반환 API 라우팅 메소드
 // http://localhost:3000/api/article/all
@@ -223,24 +245,95 @@ router.post('/update',async(req, res)=>{
 });
 
 
+
+
+router.post('/upload', simpleUpload.single('file'), async(req,res)=>{
+  
+  var apiResult = {
+    code:200,  // 성공적으로 불러왔을 때의 오류 코드 = 문제없음, 400 = 불러오지 못함
+    data:null,
+    result:"OK"
+  }
+  
+  try{
+    const uploadFile = req.file;
+    var filePath ="/upload/"+uploadFile.filename;  // 서버에 실제 업로드된 물리적인 파일명-도메인주소가 생략된 파일링크주소
+    var fileName = uploadFile.filename;  // 서버에 저장된 실제 물리파일명(파일명/확장자 포함)
+    var fileOrignalName = uploadFile.originalname;  // 클라이언트에서 선택한 오리지널 파일명
+    var fileSize = uploadFile.size;  // 파일 크기(KB)
+    var fileType = uploadFile.mimetype;  // 파일포맷
+    
+    apiResult.code = 200;
+    apiResult.data = {filePath, fileName, fileOrignalName, fileSize, fileType};
+    apiResult.result = "Ok";
+    
+    
+  }catch(err){
+    apiResult.code = 500;
+    apiResult.data = {};
+    apiResult.result = "Failed";
+    
+  }
+  
+  
+  res.json(apiResult);
+});
+
+
+// 단일 파일업로드 처리 RESTful API 라우팅 메소드
+// 게시글 파일 업로드 전용 RESTful API
+// http://localhost:3000/api/article/upload
+router.post('/uploads3', upload.getUpload('/').fields([{ name: 'file', maxCount: 1 }]), async(req,res)=>{
+
+  var apiResult = {
+    code:200,  // 성공적으로 불러왔을 때의 오류 코드 = 문제없음, 400 = 불러오지 못함
+    data:null,
+    result:"OK"
+  }
+
+  try{
+    const uploadFile = req.files.file;
+    var filePath ="/upload/"+uploadFile.filename;  // 서버에 실제 업로드된 물리적인 파일명-도메인주소가 생략된 파일링크주소
+    var fileName = uploadFile.filename;  // 서버에 저장된 실제 물리파일명(파일명/확장자 포함)
+    var fileOrignalName = uploadFile.originalname;  // 클라이언트에서 선택한 오리지널 파일명
+    var fileSize = uploadFile.size;  // 파일 크기(KB)
+    var fileType = uploadFile.mimetype;  // 파일포맷
+    
+    apiResult.code = 200;
+    apiResult.data = {filePath, fileName, fileOrignalName, fileSize, fileType};
+    apiResult.result = "Ok";
+
+
+  }catch(err){
+    apiResult.code = 500;
+    apiResult.data = {};
+    apiResult.result = "Failed";
+
+  }
+
+
+  res.json(apiResult);
+});
+
+
 // 단일 게시글 데이터 조회 반환 API 라우팅 메소드
 // http://localhost:3000/api/article/1
 router.get('/:aidx',async(req, res)=>{
-
+  
   // API라우팅 메소드 반환 형식 정의
   var apiResult = {
     code:200,  // 성공적으로 불러왔을 때의 오류 코드 = 문제없음, 400 = 불러오지 못함
     data:[],
     result:"OK"
   }
-
-
+  
+  
   try{
-
+    
     // step1 : url을 통해 전달된 게시글 고유번호를 추출한다.
     var articleIdx = req.params.aidx;
-
-
+    
+    
     // step2 : 게시글고유번호에 해당하는 단일 게시글 정보를 DB에서 조회해본다
     var article = {
       articleIdx,
@@ -255,20 +348,20 @@ router.get('/:aidx',async(req, res)=>{
       reg_member_id:"kmj",
       article_type_code:1
     }
-
-
+    
+    
     // step3 : 정상 조회된 정보를 apiResult객체 바인딩함
     apiResult.code = 200;
     apiResult.data = article;
     apiResult.result = "Ok";
-
+    
   }catch(err){
     apiResult.code = 500;
     apiResult.data = null;
     apiResult.result = "Failed";
   }
-
-
+  
+  
   res.json(apiResult);
 });
 
@@ -276,43 +369,44 @@ router.get('/:aidx',async(req, res)=>{
 // 단일 게시글 삭제 처리 반환 API 라우팅 메소드
 // http://localhost:3000/api/article/1
 router.delete('/:aidx',async(req, res)=>{
-
+  
   // API라우팅 메소드 반환 형식 정의
   var apiResult = {
     code:200,  // 성공적으로 불러왔을 때의 오류 코드 = 문제없음, 400 = 불러오지 못함
     data:[],
     result:"OK"
   }
-
-
+  
+  
   try{
-
+    
     // step1 : ulr주소에서 게시글 고유번호를 추출한다.
     var articleIdx = req.params.aidx;
-
-
+    
+    
     // step2 : DB의 article 테이블에서 해당 게시글 번호글을 완전 삭제처리한다.
 
 
     // step3 : DB에서 삭제된 건수가 전달된다.
     var deletedCnt = 1;
-
-
+    
+    
     // step4 : 정상 삭제된 정보를 apiResult객체 바인딩함
     apiResult.code = 200;
     apiResult.data = deletedCnt;
     apiResult.result = "Ok";
-
+    
   }catch(err){
     apiResult.code = 500;
     apiResult.data = 0;
     apiResult.result = "Failed";
-
+    
   }
-
-
+  
+  
   res.json(apiResult);
 });
+
 
 
 
