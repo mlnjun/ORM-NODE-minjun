@@ -10,12 +10,19 @@ var db = require('../models/index');
 호출 주소 : http://localhost:3000/
 */
 router.get('/', async(req, res, next)=>{
+
+  // 현재 로그인한 사용자 세션 정보 추출하기
+  var admin_id = req. session.loginUser.admin_id;
+
+  console.log(admin_id);
+
+
   res.render('index');
 });
 
 
 /* 
-기능 : 관리자 웹사이트 로그인 웹페이지 요청과 응답처리 라우팅 메소드
+기능 : 관리자 웹사이트 로그인 웹페이지 요청과 응답처리 라우팅 메 v소드
 호출 주소 : http://localhost:3000/
 */
 router.get('/login', async(req, res, next)=>{
@@ -50,9 +57,28 @@ router.post('/login', async(req, res, next)=>{
 
 
     if(passwordResult){
+      // step4.0: 아이디/암호가 일치하는 사용자인경우 해당 사용자의 주요정보를 세션에 저장한다.
 
-      // 로그인 성공
-      res.redirect('/');
+      // 서버에 메로리 공간에 저장할 로그인한 현재 사용자의 세션정보 구조 및 데이터 바인딩
+      var sessionLoginData = {
+        admin_member_id:member.admin_member_id,
+        company_code:member.company_code,
+        admin_id:member.admin_id,
+        admin_name:member.admin_name
+      };
+
+      // req.session속성에 동적속성으로 loginUser라는 속성을 생성하고 값으로 세션 JSON값을 저장한다.
+      req.session.loginUser = sessionLoginData;
+
+      // 반드시 req.session.save() 메소드를 호출해서 동적 속성에 저장된 신규 속성을 저장한다.
+      // save() 호출과 동시에 쿠키파일이 서버에서 생성되고 생성된 쿠키파일이 현재 사용자 웹브라우저에 전달되어 저장된다.
+      // 저장된 쿠키파일은 이후 해당 사이트 요청이 있을때마다 무조건 전달된다.
+      // 전달된 쿠키정보를 이용해 서버메모리상의 세션정보를 이용해 로그인한 사용자정보를 추출한다. 
+      req.session.save(function(){
+        // 세션으로 다 이동하면 실행됨
+        // 로그인 성공
+        res.redirect('/');
+      });
 
     }else{
 

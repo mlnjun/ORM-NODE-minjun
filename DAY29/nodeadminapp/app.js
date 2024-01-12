@@ -9,6 +9,9 @@ var logger = require('morgan');
 // 호출위치는 반드시 app.js내 최상위에서 호출할 것
 require('dotenv').config();
 
+//express기반 서버세션 관리 팩키지 참조하기 
+var session = require('express-session');
+
 
 // express-ejs-layouts 패키지 참조하기
 var expressLayouts = require('express-ejs-layouts');
@@ -27,6 +30,20 @@ var sequelize = require('./models/index.js').sequelize;
 var app = express();
 
 sequelize.sync();
+
+// express-session기반 서버세션 설정 구성하기
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: "testsecret",
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 20
+    },
+  }),
+);
 
 
 // view engine setup
