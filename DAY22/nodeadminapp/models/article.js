@@ -1,7 +1,7 @@
 // 게시글 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define(
+  const Article = sequelize.define(
     'article',
     {
       article_id:{
@@ -12,12 +12,12 @@ module.exports = function(sequelize, DataTypes){
         comment: "게시글고유번호"
       },
       board_type_code:{
-        type: DataTypes.STRING(200),
+        type: DataTypes.TINYINT,
         allowNull:false,
         comment: "게시판구분코드"
       },
       title:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(200),
         allowNull: false,
         comment: "게시글제목"
       },
@@ -82,4 +82,6 @@ module.exports = function(sequelize, DataTypes){
         }
       ]
     }
-)};
+)
+    return Article;
+};

@@ -14,10 +14,6 @@ module.exports = function(sequelize, DataTypes){
       article_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        references:{
-          model:'article',
-          key:'article_id'
-        },
         comment: "채널고유번호"
       },
       file_name:{

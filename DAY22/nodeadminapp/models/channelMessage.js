@@ -1,8 +1,8 @@
 // 채팅 채널 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define(
-    'channel_message',
+  const ChannelMessage = sequelize.define(
+    'channel_msg',
     {
       channel_msg_id:{
         type: DataTypes.INTEGER,
@@ -14,15 +14,11 @@ module.exports = function(sequelize, DataTypes){
       channel_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        references:{
-          model:'channel',
-          key:'channel_id'
-        },
         comment: "채널고유번호"
       },
       member_id:{
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         comment: "사용자고유번호"
       },
       nick_name:{
@@ -31,7 +27,7 @@ module.exports = function(sequelize, DataTypes){
         comment: "채팅닉네임"
       },
       msg_type_code:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false,
         comment: "로깅유형코드"
       },
@@ -52,11 +48,11 @@ module.exports = function(sequelize, DataTypes){
       },
       top_channel_msg_id:{
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         comment: "최상위메시지고유번호"
       },
       msg_state_code:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false,
         comment: "메시지상태코드"
       },
@@ -79,7 +75,7 @@ module.exports = function(sequelize, DataTypes){
 
     {
       sequelize,
-      tableName:"channel_message",
+      tableName:"channel_msg",
       timestamps: false,
       comment: "채팅 채널 메시지 테이블",
       indexes: [
@@ -91,4 +87,6 @@ module.exports = function(sequelize, DataTypes){
         }
       ]
     }
-)};
+)
+    return ChannelMessage;
+};

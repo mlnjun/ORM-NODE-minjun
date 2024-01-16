@@ -3,23 +3,44 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+require('dotenv').config();
+
 var expressLayouts = require('express-ejs-layouts');
+
+// express-session 패키지 참조
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var articleRouter = require('./routes/article');
-var memberRouter = require('./routes/member');
-var channelRouter = require('./routes/channel');
-var messageRouter = require('./routes/message');
 var adminRouter = require('./routes/admin');
+var articleRouter = require('./routes/article');
+var channelRouter = require('./routes/channel');
+const memberRouter = require('./routes/member');
+const messageRouter = require('./routes/message');
 
 
-var sequelize = require('./models/index').sequelize;
+var sequelize = require('./models/index.js').sequelize;
 
 var app = express();
 
 sequelize.sync();
+
+// 서버세션
+app.use(
+  session({
+    resave: false, //매번 세션 강제 저장
+    saveUninitialized: true,
+    secret: "testsecret",  // 암호화할때 사용하는 salt값
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge:1000 * 60 * 5 //5분동안 서버세션을 유지하겠다.(1000은 1초)
+    },
+  }),
+);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,20 +61,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.use('/article', articleRouter);
-app.use('/member', memberRouter);
-app.use('/channel', channelRouter);
-app.use('/message', messageRouter);
 app.use('/admin', adminRouter);
-
-
+app.use('/article', articleRouter);
+app.use('/channel', channelRouter);
+app.use('/member', memberRouter);
+app.use('/message', messageRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

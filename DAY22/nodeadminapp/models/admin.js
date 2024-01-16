@@ -1,7 +1,7 @@
 // 관리자 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define(
+  const AdminMember = sequelize.define(
     'admin_member',
     {
       admin_member_id:{
@@ -87,4 +87,6 @@ module.exports = function(sequelize, DataTypes){
         }
       ]
     }
-)};
+)
+    return AdminMember;
+};

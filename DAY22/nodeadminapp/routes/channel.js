@@ -13,38 +13,7 @@ GET
 router.get('/list',async(req,res)=>{
 
   // 채팅방 정보 데이터
-  var channel = [
-    {
-      community_id:1,
-      category_code:1,
-      channel_name:"채팅방1",
-      user_limit:2,
-      channel_desc:"채팅방1 입니다.",
-      channel_state_code:1,
-      reg_date:Date.now(),
-      reg_member_id:"A"
-    },
-    {
-      community_id:2,
-      category_code:2,
-      channel_name:"채팅방2",
-      user_limit:3,
-      channel_desc:"채팅방2 입니다.",
-      channel_state_code:2,
-      reg_date:Date.now(),
-      reg_member_id:"B"
-    },
-    {
-      community_id:3,
-      category_code:1,
-      channel_name:"채팅방3",
-      user_limit:2,
-      channel_desc:"채팅방3 입니다.",
-      channel_state_code:1,
-      reg_date:Date.now(),
-      reg_member_id:"C"
-    }
-  ]
+
 
   res.render('channel/list',{channel});
 });

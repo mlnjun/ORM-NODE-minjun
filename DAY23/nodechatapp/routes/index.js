@@ -155,7 +155,69 @@ router.post('/find',async(req, res)=>{
 });
 
 
+// 암호 초기화 페이지 요청 및 응답
+router.get('/password-init', async(req,res)=>{
+  var token = req.query.token;
 
+
+  res.render('password-init', {token});
+});
+
+
+// 암호초기화 페이지 암호 초기화 처리
+// POST
+// http://lacalhost:3000/password-init?token=JWT
+router.post('/password-init', async(req,res,next)=>{
+  var resultMsg = {
+    code:200,
+    data:"",
+    msg:""
+  }
+  
+  // 쿼리스트링으로 받은 토큰에서 해당 계정 데이터 찾기
+  var token = req.body.token;
+
+
+  try{
+    // 입력 값 받기
+    var password = req.body.password;
+  
+  
+    var tokenData = await jwt.verify(token, process.env.JWT_KEY);
+  
+    // DB에서 해당 토큰의 계정이 존재하는지 확인하기
+    var checkTokenData = await db.Member.findOne({ where:{ member_id:tokenData.member_id } });
+  
+    if(checkTokenData == null){  // 토큰의 계정정보 DB에 존재하지 않음
+      resultMsg.code = 400;
+      resultMsg.data = null,
+      resultMsg.msg = "해당 토큰의 계정은 존재하지 않습니다."
+
+      res.json(resultMsg);
+    }else{  // DB에 토큰의 계정정보 존재
+      // 암호 변경 로직
+      var encryptPassword = await bcrypt.hash(password, 12);
+
+      var updatedMember = await db.Member.update({ member_password:encryptPassword }, { where:{ member_id:checkTokenData.member_id } });
+
+      resultMsg.code = 200;
+      resultMsg.data = updatedMember,
+      resultMsg.msg = "성공"
+
+      res.json(resultMsg);
+    }
+
+  }catch(err){
+    console.log(err);
+
+    resultMsg.code = 500;
+    resultMsg.data = null,
+    resultMsg.msg = "서버 에러"
+
+    res.json(resultMsg);
+  }
+
+});
 
 
 

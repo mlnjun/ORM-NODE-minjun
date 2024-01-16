@@ -36,11 +36,11 @@ app.use(
   session({
     resave: false,
     saveUninitialized: true,
-    secret: "testsecret",
+    secret: "testsecret",  // 암호화할 때 사용하는 salt값
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 1000 * 60 * 20
+      maxAge: 1000 * 60 * 20  // 20분동안 서버세션 유지
     },
   }),
 );

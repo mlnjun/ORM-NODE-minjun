@@ -1,27 +1,19 @@
 // 채팅 채널 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  const CannelMember = sequelize.define(
+  const ChannelMember = sequelize.define(
     'channel_member',
     {
       channel_id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references:{
-          model:'channel',
-          key:'channel_id'
-        },
         comment: "채널고유번호"
       },
       member_id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull:false,
-        references:{
-          model:'member',
-          key:'member_id'
-        },
         comment: "사용자고유번호"
       },
       nick_name:{
@@ -30,12 +22,12 @@ module.exports = function(sequelize, DataTypes){
         comment: "사용자닉네임"
       },
       member_type_code:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false,
         comment: "사용자유형"
       },
       active_state_code:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false,
         comment: "접속상태코드"
       },
@@ -59,12 +51,12 @@ module.exports = function(sequelize, DataTypes){
         allowNull: false,
         comment: "아이피주소"
       },
-      reg_member_id:{
+      edit_member_id:{
         type: DataTypes.INTEGER,
         allowNull: true,
         comment: "수정자아이디"
       },
-      reg_date:{
+      edit_date:{
         type: DataTypes.DATE,
         allowNull: true,
         comment: "수정일시"
@@ -79,12 +71,11 @@ module.exports = function(sequelize, DataTypes){
       indexes: [
         {
           name: 'PRIMARY',
-          unique: true,
           using: 'BTREE',
-          fields: [ 'channel_id', 'member_id' ]
-        }
+          fields: [ { name : 'channel_id'}, { name : 'member_id'} ]
+        },
       ]
     }
 )
-  return CannelMember;
+  return ChannelMember;
 };

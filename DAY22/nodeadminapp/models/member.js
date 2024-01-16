@@ -1,7 +1,7 @@
 // 사옹자 계정 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define(
+  const Member = sequelize.define(
     'member',
     {
       member_id:{
@@ -87,4 +87,6 @@ module.exports = function(sequelize, DataTypes){
         }
       ]
     }
-)};
+)
+return Member;
+};

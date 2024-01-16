@@ -1,7 +1,7 @@
 // 채팅 채널 정보 Model
 
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define(
+  const Channel = sequelize.define(
     'channel',
     {
       channel_id:{
@@ -82,4 +82,6 @@ module.exports = function(sequelize, DataTypes){
         }
       ]
     }
-)};
+    )
+    return Channel;
+  };
