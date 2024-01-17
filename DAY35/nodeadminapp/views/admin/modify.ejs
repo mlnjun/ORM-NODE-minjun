@@ -1,0 +1,182 @@
+
+            <!--우측 콘텐츠 헤더영역 -->
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>관리자 계정 정보 수정</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/Home/Index">Home</a> > 
+                        </li>
+                        <li>
+                            <a>관리자 계정 확인</a> > 
+                        </li>
+                        <li class="active">
+                            <strong>수정/삭제</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+
+            <!--우측 콘텐츠 영역 -->
+            <form action="/admin/modify/<%=admins.admin_member_id%>" method="post" id="adminForm">
+                <div class="wrapper wrapper-content">
+                    <div class="ibox-content m-b-sm border-bottom">
+    
+                        <!-- 회사코드, 관리자 아이디, 암호 -->
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">소속회사</label>
+                                    <select name="companyCode" id="companyCode" class="form-control">
+                                        <option value="0" <% if(admins.company_code == "0") { %> selected <% } %>>선택</option>
+                                        <option value="1" <% if(admins.company_code == "1") { %> selected <% } %>>자회사</option>
+                                        <option value="2" <% if(admins.company_code == "2") { %> selected <% } %>>협력회사</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">관리자ID</label>
+                                    <input type="text" name="adminid" id="adminid" value="<%=admins.admin_id%>" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">관리자PW</label>
+                                    <input type="password" name="admin_password" id="admin_password" value="<%=admins.admin_password%>" class="form-control">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- 관리자명, 메일주소, 전화번호 -->
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">관리자명</label>
+                                    <input type="text" name="admin_name" id="admin_name" value="<%=admins.admin_name%>" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">메일주소</label>
+                                    <input type="text" name="email" id="email" value="<%=admins.email%>" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">전화번호</label>
+                                    <input type="text" name="telephone" id="telephone" value="<%=admins.telephone%>" class="form-control">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- 사용여부, 부서명 -->
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">사용여부</label>
+                                    <select name="usedYNCode" id="usedYNCode" class="form-control">
+                                        <option value="9" <% if(admins.used_yn_code == "9") { %> selected <% } %>>선택</option>
+                                        <option value="1" <% if(admins.used_yn_code == "1") { %> selected <% } %>>사용함</option>
+                                        <option value="0" <% if(admins.used_yn_code == "0") { %> selected <% } %>>사용안함</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">부서명</label>
+                                    <input type="text" name="dept_name" id="dept_name" value="<%=admins.dept_name%>" class="form-control">
+                                </div>
+                            </div>
+
+                        </div>
+    
+                        <!-- 저장, 목록 이동 버튼 -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" id="btnDelete" class="btn btn-danger">삭제</button>
+                            <a href="/admin/list" class="btn btn-info">목록</a>
+                        </div>
+    
+                    </div>
+                </div>
+            </form>
+
+    <script>
+
+        // 서버에서 보내준 html 웹페이지가 사용자 웹브라우저에
+        // 모두 렌더링이 완료된 시점에 발생 $(document).ready();
+        // $("#admin").ready(function(){
+        //     $("#boardTypeCode").focus();
+        // });
+
+
+
+        // form태그내 사용자가 입력한 데이터 유효성겁사(validation Check)함수 구현
+        // $("#adminForm").submit(function(){
+            
+        //     // 게시판 유형 값 선택여부 체크
+        //     if($("#boardTypeCode").val() == "0"){
+        //         alert("게시판 유형을 선택해주세요.");
+        //         $("#boardTypeCode").focus();
+        //         return false;
+        //     }
+
+        //     // 제목 입력요소 유효성 검사
+        //     if($("#title").val() == ""){
+        //         alert("제목을 입력해주세요.");
+        //         $("#title").focus();
+        //         return false;
+        //     }
+
+        //     // 게시글 유형코드 유효성 검사
+        //     if($("#articleTypeCode").val() == "0"){
+        //         alert("게시글 유형을 선택해주세요.");
+        //         $("#articleTypeCode").focus();
+        //         return false;
+        //     }
+
+        //     // 게시 여부 선택 체크
+        //     if($("#isDisplayCode").val() == "9"){
+        //         alert("게시 여부를 선택해주세요.");
+        //         $("#isDisplayCode").focus();
+        //         return false;
+        //     }
+
+        //     // 작성자명 입력 여부 체크
+        //     if($("#register").val() == ""){
+        //         alert("작성자명을 입력해주세요.");
+        //         $("#register").focus();
+        //         return false;
+        //     }
+
+
+        //     return true
+        // });
+
+
+        // 클라이언트(웨브라우저)에서 삭제버튼이 클릭되면 최종 삭제 여부 확인 후
+        // 삭제 라우팅메소드 호출하기
+        $("#btnDelete").click(function(){
+            if(confirm("정말로 삭제하시겠습니까?")){
+                // 사용자가 confirm창에서 확인버튼을 누르면 true가 반환되기 되어 실행되는 곳
+                // 확인 버튼 클릭시 실행해야하는 기능 구현
+
+                // location.herf= ""  사용자 웹브라우저를 특정 웹페이지url로 이동시킨다.
+                location.href="/admin/delete?aid=<%=admins.admin_member_id%>";
+            }else{
+                alert("삭제를 취소했습니다.");
+            };
+
+        });
+    </script>

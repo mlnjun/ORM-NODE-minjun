@@ -34,13 +34,13 @@ sequelize.sync();
 // express-session기반 서버세션 설정 구성하기
 app.use(
   session({
-    resave: false,
-    saveUninitialized: true,
-    secret: "testsecret",  // 암호화할 때 사용하는 salt값
+    resave: false,  // 매번 세션 강제 저장-로그인시마다 세션구조/데이터 변경 없어도 다시 저장 여부 체크
+    saveUninitialized: true,  // 빈 세션도 저장할지 여부 기본 = true
+    secret: process.env.COOKIE_SECRET,  // 암호화할 때 사용하는 salt값 > 추가적인 파라미터를 넣어 암호화 복잡도 증가
     cookie: {
-      httpOnly: true,
-      secure: false,
-      maxAge: 1000 * 60 * 20  // 20분동안 서버세션 유지
+      httpOnly: true,  // javascript로 cookie에 접근하지 못하게 하는 옵션(true)
+      secure: false,  // https 환경에서만 session 정보를 주고 받도록 처리
+      maxAge: 1000 * 60 * 20  // 쿠키의 유효기간 /20분동안 서버세션 유지
     },
   }),
 );
