@@ -8,12 +8,29 @@ var logger = require('morgan');
 var flash = require('connect-flash');
 
 
+
+
+
 // 환경설정파일 호출하기 : 전역정보로 설정됩니다.
 // 호출위치는 반드시 app.js내 최상위에서 호출할 것
 require('dotenv').config();
 
 //express기반 서버세션 관리 팩키지 참조하기 
+// var session = require('express-session');
+
+// 분산서버 기반 세션 관리를 위한 Redis 환경설정1
+const redis = require("redis");
 var session = require('express-session');
+let RedisStore = require("connect-redis")(session);
+
+let redisClient = redis.createClient({
+  host: "127.0.0.1",
+  port: 6379,
+  db: 0,
+  password: "test12345",
+});
+
+
 // passport 패키지 참조
 const passport = require('passport');
 // 인증관련 패스포트 개발자 정의 모듈참조,로컬로그인전략적용
@@ -45,17 +62,33 @@ sequelize.sync();
 passportConfig(passport);
 
 // express-session기반 서버세션 설정 구성하기
+// app.use(
+//   session({
+//     resave: false,  // 매번 세션 강제 저장-로그인시마다 세션구조/데이터 변경 없어도 다시 저장 여부 체크
+//     saveUninitialized: true,  // 빈 세션도 저장할지 여부 기본 = true
+//     secret: process.env.COOKIE_SECRET,  // 암호화할 때 사용하는 salt값 > 추가적인 파라미터를 넣어 암호화 복잡도 증가
+//     cookie: {
+//       httpOnly: true,  // javascript로 cookie에 접근하지 못하게 하는 옵션(true)
+//       secure: false,  // https 환경에서만 session 정보를 주고 받도록 처리
+//       maxAge: 1000 * 60 * 20  // 쿠키의 유효기간 /20분동안 서버세션 유지
+//     },
+//   }),
+// );
+
+
 app.use(
   session({
-    resave: false,  // 매번 세션 강제 저장-로그인시마다 세션구조/데이터 변경 없어도 다시 저장 여부 체크
-    saveUninitialized: true,  // 빈 세션도 저장할지 여부 기본 = true
-    secret: process.env.COOKIE_SECRET,  // 암호화할 때 사용하는 salt값 > 추가적인 파라미터를 넣어 암호화 복잡도 증가
+    store: new RedisStore({ client: redisClient }),
+    saveUninitialized: true,
+    secret: "secretkey",
+    resave: false,
     cookie: {
-      httpOnly: true,  // javascript로 cookie에 접근하지 못하게 하는 옵션(true)
-      secure: false,  // https 환경에서만 session 정보를 주고 받도록 처리
-      maxAge: 1000 * 60 * 20  // 쿠키의 유효기간 /20분동안 서버세션 유지
-    },
-  }),
+    httpOnly: true,
+    secure: false,
+  },
+  ttl : 250, //Redis DB에서 세션정보가 사라지게 할지에 대한 만료시간설정
+  token: "secretkey",
+  })
 );
 
 //패스포트-세션 초기화 : express session 뒤에 설정
