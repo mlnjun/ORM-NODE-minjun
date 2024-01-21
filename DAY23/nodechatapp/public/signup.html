@@ -54,25 +54,39 @@
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
 					<div class="login-wrapper">
-						<form action="index.html">
+						<form id="entryForm">
 							<div class="login-screen">
 								<div class="login-body">
 									<a href="index.html" class="login-logo">
 										<img src="img/logo.svg" alt="Quick Chat">
 									</a>
 									<h6>Welcome to Quick Chat App,<br>Create your account.</h6>
+									
 									<div class="field-wrapper">
-										<input type="email" autofocus>
-										<div class="field-placeholder">Email ID</div>
+										<input id="email" type="email" autofocus>
+										<div class="field-placeholder">Email</div>
 									</div>
 									<div class="field-wrapper">
-										<input type="password">
-										<div class="field-placeholder">Password</div>
+										<input id="password" type="password">
+										<div class="field-placeholder">비밀번호</div>
 									</div>
 									<div class="field-wrapper mb-3">
-										<input type="password">
-										<div class="field-placeholder">Confirm Password</div>
+										<input id="confirmPW" type="password">
+										<div class="field-placeholder">비밀번호 재확인</div>
 									</div>
+									<div class="field-wrapper mb-3">
+										<input id="name" type="text">
+										<div class="field-placeholder">이름</div>
+									</div>
+									<div class="field-wrapper mb-3">
+										<input id="telephone" type="text">
+										<div class="field-placeholder">전화번호</div>
+									</div>
+									<div class="field-wrapper mb-3">
+										<input id="birth_date" type="date">
+										<div class="field-placeholder">생년월일</div>
+									</div>
+
 									<div class="actions">
 										<button type="submit" class="btn btn-primary ml-auto">Sign Up</button>
 									</div>
@@ -91,6 +105,70 @@
 		<!-- *************
 			************ Login container end *************
 		************* -->
+
+		<script src="./js/jquery.min.js"></script>
+
+		<script>
+
+			$('#entryForm').submit(function(){
+				if($('#email').val() == ""){
+					alert("email을 입력하세요");
+					$("#email").focus();
+				}else if($('#password').val() == ""){
+					alert("비밀번호를 입력하세요");
+					$("#password").focus();
+				}else if($('#confirmPW').val() == ""){
+					alert("비밀번호 재확인을 입력하세요");
+					$("#confirmPW").focus();
+				}else if($('#name').val() == ""){
+					alert("이름을 입력하세요");
+					$("#name").focus();
+				}else if($('#telephone').val() == ""){
+					alert("전화번호를 입력하세요");
+					$("#telephone").focus();
+				}else if($('#birth_date').val() == ""){
+					alert("생년월일을 입력하세요");
+					$("#birth_date").focus();
+				}else{
+					// 모든 입력값 존재
+
+					// 가입의사 재확인
+					confirm("정말 가입하시겠습니까?");
+
+					// 회원가입 데이터
+					entryData = {
+						email:$("#email").val(),
+						password:$("#password").val(),
+						name:$("#name").val(),
+						telephone:$("#telephone").val(),
+						birth_date:$("#birth_date").val()
+					}
+
+					// 회원가입 ajax로 요청
+					$.ajax({
+						type:"post",
+						url:"/api/member/entry",
+						data:entryData,
+						success:function(result){
+							if(result.code == 200){
+								// 가입 성공
+								alert(result.msg);
+								window.location.href = "/login1.html";
+							}else if(result.code == 400){
+								// 프론트엔드 오류
+								alert(result.msg);
+							}else if(result.code == 500){
+								// 서버 오류
+								alert(result.msg);
+							}
+						}
+					})
+				};
+
+				return false;
+			});
+
+		</script>
 
 	</body>
 </html>

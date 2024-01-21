@@ -6,6 +6,8 @@ var router = express.Router();
 
 var db = require('../models');
 
+var moment = require('moment');
+
 // 단방향 암호화를 위한 bcrypt 패키지 참조 (비밀번호와 같은 민감한 정보를 안전하게 저장)
 const bcrypt = require('bcryptjs');
 
@@ -19,78 +21,130 @@ const jwt = require('jsonwebtoken');
 var {tokenAuthChecking} = require('./apiMiddleware');
 
 
-router.post('/login', async function (req, res, next) {
+// 사용자 로그인 인증 토큰 전송 라우팅 메소드
+// http://localhost:3000/api/member/login
+router.post('/login', async (req, res, next)=>{
   var apiResult = {
     code:400,
     data:null,
     msg:""
-};
+  };
 
-try{
-  var email = req.body.email;
-  var password = req.body.password;
+  try{
+    // 입력 값 받기
+    var email = req.body.email;
+    var password = req.body.password;
 
-  var resultMsg = "";
-  
-  // step1 : 로그인(인증)-동일 메일주소 여부 체크
-  var member = await db.Member.findOne({ where:{ email:email } });
-  
-
-  if(member == null){
-    resultMsg = "NotExistEmail";
-
-    apiResult.code = 400;  // 서버에 없는 자원 요청 오류코드
-    apiResult.data = null;
-    apiResult.msg = resultMsg;
-
-  }else{
-    // step2: 단방향 암호화 기반 동일암호 일치여부 체크
-    // 단방향 암호화 해시 알고리즘 암호 체크
-    var compareResult = await bcrypt.compare(password, member.member_password);
-
+    // 입력 email 계정 DB에서 찾기
+    var loginData = await db.Member.findOne({where:{email:email}});
     
-    if(compareResult){
-      resultMsg = "Ok";
-      
-      member.member_password = "";
-      member.telephone = AES.decrypt(member.telephone, process.env.MYSQL_AES_KEY);
+    // 입력 email DB에서 존재하는 계정인지 확인
+    if(loginData == undefined){
+      // 해당 계정 존재하지않음
+      apiResult.code = 400;
+      apiResult.data = null;
+      apiResult.msg = "해당 이메일의 계정은 존재하지 않습니다.";
+    }else{
+      // 해당 email계정 존재
 
-      // step3 : 인증된 사용자의 기본정보 JWT토큰 생성 발급
-      // step3.1 : JWT토큰에 담을 사용자 정보 생성
-      //JWT인증 사용자 정보 토큰 값 구조 정의 및 데이터 세팅
-      var memberTokenData = {
-        member_id:member.member_id,  // 구분되는 고유한 PK가 핵심
-        email:member.email,
-        name:member.name,
-        profile_img_path:member.profile_img_path,
-        telephone:member.telephone,
-        etc:"기타정보"
+      // 입력 password 해당 email 계정의 password와 일치 비교
+      var checkPW = await bcrypt.compare(password, loginData.member_password); 
+
+      if(!checkPW){
+        // 비밀번호 틀림
+        apiResult.code = 400;
+        apiResult.data = null;
+        apiResult.msg = "해당 이메일의 패스워드가 아닙니다.";
+      }else{
+        // 로그인 성공 로직
+
+        // 토큰에 담을 해당 계정 데이터 객체
+        var tokenData = {
+          member_id:loginData.member_id,
+          email:loginData.email,
+          name:loginData.name
+        }
+
+        // 데이터 토큰화
+        var token = await jwt.sign(tokenData, process.env.JWT_KEY,{expiresIn:'24h', issuer:'kmj'});
+
+        apiResult.code = 200;
+        apiResult.data = token;
+        apiResult.msg = "로그인 성공";
       }
 
-      var token = await jwt.sign(memberTokenData, process.env.JWT_KEY, {expiresIn:'24h', issuer:'company'});
-
-      apiResult.code = 200;
-      apiResult.data = token;
-      apiResult.msg = resultMsg;
-    }else{
-      resultMsg = "NotCorrectPassword";
-
-      apiResult.code = 500;
-      apiResult.data = null;
-      apiResult.msg = resultMsg;
     }
+  }catch(err){
+    apiResult.code = 500;
+    apiResult.data = null;
+    apiResult.msg = "서버 에러";
   }
 
+  res.json(apiResult);
+});
 
-}catch(err){
-  console.log('서버에러발생-/api/member/entry',err.message);
 
-  apiResult.code = 500;
-  apiResult.data = null;
-  apiResult.msg = "Failed";
-}
+// 사용자 회원가입 라우팅 메소드
+// http://localhost:3000/api/member/login
+router.post('/entry', async(req,res,next)=>{
+  var apiResult = {
+    code:200,
+    data:null,
+    msg:""
+  }
 
-res.json(apiResult);
+  try{
+    // 사용자 입력 값 받기
+    var email = req.body.email;
+    var password = req.body.password;
+    var name = req.body.name;
+    var telephone = req.body.telephone;
+    var birth_date = req.body.birth_date;
+
+    if(!(email && password && name && telephone && birth_date)){
+      // 일부데이터 넘어오지 않음
+
+      apiResult.code = 400;
+      apiResult.data = null;
+      apiResult.msg = "가입 정보가 정상적으로 전송되지 않았습니다.";
+    }else{
+      // 정상 진행
+
+      // 비밀번호 단방향 암호화
+      var encryptedPW = await bcrypt.hash(password, 12);
+    
+      // 전화번호, 생년월일 양방향 암호화
+      var encryptedPhone = await AES.encrypt(telephone, process.env.MYSQL_AES_KEY);
+      var encryptedBirth = await AES.encrypt(birth_date, process.env.MYSQL_AES_KEY);
+    
+      // 사용자 계정 정보 객체
+      var memberData = {
+        email,
+        member_password:encryptedPW,
+        name,
+        telephone:encryptedPhone,
+        birth_date:encryptedBirth,
+        entry_type_code:1,
+        use_state_code:1,
+        reg_date:Date.now(),
+        reg_member_id:1  // 임시 값
+      }
+    
+      // 사용자 입력 값 DB에 넣기
+      var member = await db.Member.create(memberData);
+    
+      apiResult.code = 200;
+      apiResult.data = member;
+      apiResult.msg = "가입 성공";
+    }
+  
+  }catch(err){
+    apiResult.code = 500;
+    apiResult.data = null;
+    apiResult.msg = "서버 에러";
+  }
+
+  res.json(apiResult);
 });
 
 

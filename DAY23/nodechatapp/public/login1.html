@@ -97,60 +97,50 @@
 
 		<script>
 
-			$("#loginForm").submit(function(){
+			$('#loginForm').submit(function(){
 
-				// 유효성검사
-				if($("#email").val() == ""){
-					alert("메일주소를 입력해주세요.");
-					$("#email").focus();
-					return false;
+				// email/password 값 존재 여부 확인
+				if($('#email').val() == ""){
+					alert("이메일을 입력하세요");
+					$('#email').focus();
+				}else if($("#password").val() == ""){
+					alert("패스워드를 입력하세요");
+					$('#password').focus();
+				}else{
+					// 모든 값 존재
+
+					// 입력 값 받기
+					var loginData = {
+						email:$('#email').val(),
+						password:$('#password').val()
+					}
+					
+					$.ajax({
+						type:"post",
+						url:"/api/member/login",
+						data:loginData,
+						success:function(result){
+							if(result.code == 400){
+								// 프론트엔드 에러
+								alert(result.msg);
+							}else if(result.code == 500){
+								// 서버 에러
+								alert(result.msg);
+							}else if(result.code == 200){
+								// 로그인 성공
+
+								// 사용자 인증토큰 로컬 스토리지에 저장
+								localStorage.setItem("userauthtoken",result.data);
+
+								// 메인 페이지 이동처리
+								window.location.href = "/main.html";
+							}
+						}
+					})
 				}
 
-
-				// 백엔드의 로그인 RESTful API를 호출해 로그인 처리
-
-				var member = {
-					"email":$("#email").val(),
-					"password":$("#password").val()
-				};
-
-				// $.post = $.ajax()
-				$.ajax({
-					url:"/api/member/login",
-					type:"POST",
-					data:member,  //json 객체
-					success:function(result){  //success 함수에서 result 프로퍼티에 값이 넘어옴
-						console.log("회원로그인 결과값 확인: ", result);
-
-						if(result.code == 200){
-							// 백엔드에서 전달된 JWT토큰값을 웹브라우저 환경에 저장한다.
-							// 저장방식은 Cookie(X)보다 storage(local(재사용가능), session(재사용 불가능))객체를 사용한다.
-							// 웹브라우저에 탑재된 HTML5의 Storage객체는 웹브라우저에
-							// 쿠키를 대신해 데이터를 저장할 수 있는 클라이언트 HTML객체
-
-							// 	localStorage.setItem("키값", JWT토큰 값);
-							localStorage.setItem("userauthtoken", result.data);
-
-							location.href="/main.html";
-						}else if(result.code == 400){
-							if(result.msg == "NotExistEmail"){
-								alert("동일한 메일주소가 존재하지 않습니다.");
-								return false;
-							}
-							if(result.msg == "NotCorrectPassword"){
-								alert("암호가 존재하지 않습니다.");
-								return false;
-							}
-						}else{
-							alert("로그인을 실패했습니다.");
-						}
-					}
-
-				});
-
-				// 서브밋 프롯스를 중단하기 위해 반드시 여기에 return false; 넣기
 				return false;
-			});
+			})
 
 		</script>
 
