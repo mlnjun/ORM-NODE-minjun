@@ -51,7 +51,7 @@ module.exports = function(sequelize, DataTypes){
         allowNull: false,
         comment: "사용 여부"
       },
-      reg_user_id:{
+      reg_member_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
         comment: "등록자 고유 번호"

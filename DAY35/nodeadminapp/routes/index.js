@@ -120,7 +120,7 @@ router.post('/passportLogin', isNotLoggedIn, async(req,res,next)=>{
     // 패스포트 인증시 에러가 발생한경우 에러값이 반환됨
     if(authError){
       console.log(authError);
-      return next(authError);
+      return next(authError);  // app.js에 에러 핸들러 부분에 넘어감
     }
 
 

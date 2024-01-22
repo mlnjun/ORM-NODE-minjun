@@ -7,10 +7,6 @@ var logger = require('morgan');
 //일회성(휘발성) 데이터를 특정 페이지(뷰)에 전달하는 방식제공 플래시 팩키지참조하기
 var flash = require('connect-flash');
 
-
-
-
-
 // 환경설정파일 호출하기 : 전역정보로 설정됩니다.
 // 호출위치는 반드시 app.js내 최상위에서 호출할 것
 require('dotenv').config();

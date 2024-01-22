@@ -85,7 +85,7 @@ router.post('/login', async (req, res, next)=>{
 
 
 // 사용자 회원가입 라우팅 메소드
-// http://localhost:3000/api/member/login
+// http://localhost:3000/api/member/entry
 router.post('/entry', async(req,res,next)=>{
   var apiResult = {
     code:200,
@@ -322,7 +322,6 @@ router.get('/mid/:userid',async(req,res)=>{
 })
 
 
-
 // 사용자 암호 체크 및 암호 변경 기능
 // http://localhost:3000/api/member/password/update
 // POST
@@ -378,6 +377,5 @@ router.post('/password/update', tokenAuthChecking, async (req, res, next) => {
 });
 
 
-module.exports = router;
 
 module.exports = router;

@@ -28,7 +28,7 @@
             <h3>관리자 웹사이트 로그인</h3>
             <p id="comment"></p>
 
-            <form class="m-t" action="/login" method="post">
+            <form class="m-t" action="/passportlogin" method="post">
                 <div class="form-group">
                     <input type="text" name="admin_id" class="form-control" placeholder="Username" required="">
                 </div>
@@ -52,6 +52,13 @@
 
     <script>
         $('#comment').text('<%=resultMsg%>');
+
+        var loginError = "<%=loginError%>";
+
+        // 패스포트 방식 로그인 에러
+        if(loginError > 0){
+            alert(loginError);
+        }
     </script>
 
 </body>
