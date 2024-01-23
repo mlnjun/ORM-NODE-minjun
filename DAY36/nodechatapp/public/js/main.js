@@ -18,6 +18,7 @@ $(".recent-chat-list .chat-cards li").click(function () {
 	$(".chat-content-wrapper").removeClass("d-none");
 });
 
+// Chats 아이콘(기존대화채널목록) 채널클릭시 채팅화면 보여주기
 $(".users-container .users-list li").click(function () {
 	$(".empty-chat-screen").addClass("d-none");
 	$(".chat-content-wrapper").removeClass("d-none");
