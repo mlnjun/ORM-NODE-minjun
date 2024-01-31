@@ -6,8 +6,12 @@ var logger = require('morgan');
 
 require('dotenv').config();
 
+const webSocket = require('./socket');
+
 // CORS 접근 이슈 해결을 위한 cors패키지 참조
 const cors = require("cors");
+
+const debug = require('debug');
 
 var sequelize = require('./models/index.js').sequelize;
 
@@ -85,4 +89,59 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+// 노드앱의 기본 WAS 서비스 포트
+app.set('port', process.env.PORT || 3000);
+
+// 노드앱이 작동되는 서버 객체 생성
+var server = app.listen(app.get('port'), function(){
+
+});
+
+
+// 웹소캣 express서버와 연결처리
+webSocket(server);
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

@@ -191,6 +191,7 @@ router.post('/find', async (req, res) => {
 });
 
 
+// 미완
 // 회원 정보 관리 RESTful API 라우팅 기능 제공
 // http://localhost:3000/api/member/all
 router.get('/all',async(req, res)=>{
@@ -198,7 +199,8 @@ router.get('/all',async(req, res)=>{
 });
 
 
-// 계정 생성
+// 미완
+// 계정 생성 
 // http://localhost:3000/api/member/create
 router.post('/create',async(req,res)=>{
 
@@ -213,6 +215,7 @@ router.post('/create',async(req,res)=>{
 })
 
 
+// 미완
 // 계정 정보 수정
 // http://localhost:3000/api/member/modify/1
 router.post('/modify/:uid',async(req,res)=>{
@@ -279,6 +282,7 @@ router.post('/modify/:uid',async(req,res)=>{
 })
 
 
+// 미완
 // 계정 삭제
 // http://localhost:3000/api/member/delete
 router.post('/delete',async(req,res)=>{
@@ -306,7 +310,8 @@ router.post('/delete',async(req,res)=>{
 });
 
 
-  // 단일 회원정보 데이터 조회 
+// 미완
+// 단일 회원정보 데이터 조회 
 // http://localhost:3000/api/member/cid
 router.get('/mid/:userid',async(req,res)=>{
   let userid = req.params.userid;
@@ -320,6 +325,36 @@ router.get('/mid/:userid',async(req,res)=>{
   }
   
 })
+
+
+// email로 단일 회원정보 데이터 조회
+// http://localhost:3000/api/member/invite
+router.post('/invite', async (req, res, next)=> {
+  const apiResult = { 
+    code: 200,
+    data: null,
+    result: 'ok',
+  };
+
+  try {
+    const email = req.body.email;
+
+    const inviteMember = await db.Member.findOne({
+      where: { email },
+      attributes: ['member_id', 'email', 'name', 'profile_img_path', 'use_state_code']
+    });
+
+    apiResult.code = 200;
+    apiResult.data = inviteMember;
+    apiResult.result = 'ok';
+  } catch (err) {
+    apiResult.code = 500;
+    apiResult.data = null;
+    apiResult.result = 'Failed';
+  }
+
+  res.json(apiResult);
+});
 
 
 // 사용자 암호 체크 및 암호 변경 기능

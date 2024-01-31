@@ -5,11 +5,11 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('chatappday18:server');
+var debug = require('debug')('nodechatapp:server');
 var http = require('http');
 
-// 서버소캣 모둘을 참조한다.
-const webSocket = require('../socket');
+// socket.js 참조
+const webSocket = require("../socket");
 
 /**
  * Get port from environment and store in Express.
@@ -29,12 +29,11 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
-
-// 웹소캣 express서버와 연결처리
-webSocket(server);
-
 server.on('error', onError);
 server.on('listening', onListening);
+
+// express서버와 웹소켓 연결
+webSocket(server);
 
 /**
  * Normalize a port into a number, string, or false.

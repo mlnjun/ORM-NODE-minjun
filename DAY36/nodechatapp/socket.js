@@ -9,6 +9,8 @@ var jwt = require('jsonwebtoken');
 // DB객체 참조하기
 var db = require('./models/index');
 
+var redis = require('socket.io-redis');
+
 
 
 module.exports = (server)=>{
@@ -21,6 +23,16 @@ module.exports = (server)=>{
     },
   });
 
+
+  //Redis Backplain 연결설정
+  // env파일로 관리하기
+  io.adapter(
+    redis({
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      // password:process.env.REDIS_PW
+    })
+  );
 
   io.on("connection",async(socket)=>{
 

@@ -20,10 +20,10 @@ var session = require('express-session');
 let RedisStore = require("connect-redis")(session);
 
 let redisClient = redis.createClient({
-  host: "127.0.0.1",
-  port: 6379,
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
   db: 0,
-  password: "test12345",
+  password: process.env.REDIS_PW,
 });
 
 
